@@ -136,3 +136,226 @@ selects elements that are next to each other and have the same parent element. I
 selects elements that are siblings of another element, regardless of their position. It is represented by a tilde `(~)`. For example, `p ~ img` selects all `<img>` elements that are after a `<p>` element.
 
 ## Animating with only CSS -
+
+### CSS 2D Transforms Methods
+
+The CSS 2D transform property allows us to use the following transformation methods:
+
+#### translate():
+
+moves an element both horizontally and vertically
+`transform: translate(x-value,y-value)`
+_Note: The negative value moves the element in the opposite direction._
+`transform: translate(60px, -20px)`
+
+#### rotate():
+
+rotates an element in either clockwise or anticlockwise direction
+`transform: rotate(degree)`
+_Note:The negative degree value rotates the element in the anti-clockwise direction._
+`transform: rotate(-30deg)`
+
+#### scale():
+
+increases or decreases the size of an element
+`transform: scale(x-value, y-value)`
+`transform: scale(2, 0.5)`
+
+#### skew():
+
+distorts an element by tilting along x and/or y axes
+`transform: skew(x-angle,y-angle)`
+_Note: The skew angles can be positive or negative, depending on the direction we want to skew the element. Positive values tilt the element in one direction, while negative values tilt it in the opposite direction._
+`transform: skew(10deg, 20deg)`
+
+#### matrix():
+
+combines multiple transform methods into a single method
+`matrix(scaleX(), skewY(), skewX(), scaleY(), translateX(), translateY())`
+_Note: The skew values in the matrix() function are specified in radians, not degrees._
+`transform: matrix(1.5, 0.5, -0.5, 1, 50, 10)`
+
+[CSS 2D Transform](https://www.programiz.com/css/2d-transform)
+
+### CSS 3D Transforms Methods
+
+To visualize the effect of 3D transform methods, we need to use a perspective property. This property allows us to define the virtual distance between the viewer and 3D transformed elements.
+
+The syntax of the perspective property is: `perspective: length_value;`
+
+The perspective property takes a length value, which indicates the distance from the viewer to the 3D plane containing the transformed element.
+
+CSS 3D transform property allows us to use the following transformation methods:
+
+#### translate3d()
+
+The translate3d() method moves an element in a three dimensional space along the x, y, and z-axes.
+`transform: translate3d(x-value,y-value,z-value)`
+
+#### rotate3d()
+
+The rotate3d() method rotates an element in the three-dimensional plane to the clockwise or anti-clockwise direction.
+`transform: rotate3d(x, y, z, angle)`
+`transform: rotate3d(1, 1, 1, 30deg)`
+
+#### scale3d()
+
+The scale3d() method scales the element i.e increases or decreases the size of an element in three-dimensional space along all the axes. It changes the width, height, and depth of the element.
+`transform: scale3d(x, y, z)`
+
+[CSS 3D Transforms](https://www.programiz.com/css/3d-transform)
+
+### CSS Transition
+
+CSS transitions enable smooth changes in the CSS property values over the specified duration.
+For example,
+
+```
+div {
+    background-color: orange;
+    transition: background-color 1s linear;
+}
+
+div:hover {
+    background-color: red;
+}
+```
+
+CSS transition includes the following properties:
+
+#### transition-property -
+
+`transition-property: none | all | property-name`
+
+#### transition-duration -
+
+`transition-duration: time-value`
+
+#### transition-timing-function -
+
+`transition-timing-function: timing-function`
+
+Here, `timing-function` represents any of the following values:
+
+`ease`: transition starts slowly, accelerates at the middle, and slowly ends
+`linear`: specifies the constant transition speed throughout the duration
+`ease-in`: specifies the transition with a slow start and fast end
+`ease-out`: specifies the transition with a fast start and slow end
+`ease-in-out`: specifies the transition with a slow start and end
+`step-start`: specifies the transition with an instant beginning that remains constant throughout the end
+`step-end`: specifies the transition with a constant beginning that ends instantly
+`steps(int, start | end)`: represents transition with stepped timing function and defined interval
+`cubic-bezier`: defines a custom transition with specified values
+
+#### transition-delay -
+
+`transition-delay: time_value`
+
+#### transition (shorthand property) -
+
+`transition: [transition-property] [transition-duration] [transition-timing-function] [transition-delay]`
+
+For Example -
+`transition: width 2s linear 1s;` is equivalent to,
+
+```
+transition-property: width;
+transition-duration: 2 seconds;
+transition-timing-function: linear;
+transition-delay : 1 second;
+```
+
+[CSS Transitions](https://www.programiz.com/css/transitions)
+
+### CSS Animation Properties
+
+CSS animation has the following properties:
+
+#### @keyframe rule
+
+```
+@keyframes animate-background {
+  0% {
+    background-color: orange;
+  }
+  100% {
+    background-color: red;
+  }
+}
+```
+
+#### animation-name
+
+`animation-name: animate-background` specifies the animation name
+
+#### animation-duration
+
+`animation-duration: 5s` specifies the animation duration
+
+#### animation-delay
+
+`animation-delay: 2s;`
+
+#### animation-iteration-count
+
+The `animation-iteration-count` property specifies the number of times the animation should be played.
+The value of the `animation-iteration-count` property can be specified in the `integers` or `once` and `infinite` keywords.
+
+#### animation-direction
+
+The `animation-direction` property specifies the direction for the animation.
+
+The possible values for the animation-direction property are:
+`normal`: animation plays forward, default value
+`reverse`: animation plays backward
+`alternate`: animation alternates between forward and backward
+`alternate-reverse`: animation alternates between backward and forward
+
+#### animation-timing-function
+
+The `animation-timing-function` property specifies how the intermediate property values are calculated during the animation duration.
+
+The `animation-timing-function` property has the following values:
+
+`ease`, `ease-in`, `ease-out`, `ease-in-out`,`linear`, `cubic-bezier(n, n, n, n)`
+
+#### animation-fill-mode
+
+The `animation-fill-mode` property decides how the animation applies to an element before and after the animation.
+
+By default, the animation only affects the targeted element during the animation duration.
+
+The `animation-fill-mode` property has the following possible values:
+
+`none`: no styles are applied before and after the animation (default value)
+`forwards`: styles of the last keyframes are applied after the animation
+`backwards`: styles of the first keyframe are applied after the animation
+`both`: applies styles both before and after the animation
+
+#### animation
+
+The `animation` property is a shorthand property that combines multiple animation-related properties into a single declaration.
+
+The syntax of the animation property is as follows:
+`animation: animation-name duration timing-function delay iteration-count direction fill-mode;`
+
+e.g. -
+
+```
+.container:hover .inner-div {
+    /* shorthand animation property */
+    animation: animate-div 2s ease-in-out 0.1s 3 alternate forwards;
+}
+@keyframes animate-div {
+    0% {
+        left: 0%;
+    }
+    100% {
+        left: 80%;
+    }
+}
+```
+
+[CSS Animations](https://www.programiz.com/css/animations)
+
+## Animating with Framer Motion -
