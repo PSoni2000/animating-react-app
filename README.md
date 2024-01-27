@@ -135,6 +135,90 @@ selects elements that are next to each other and have the same parent element. I
 **General sibling selector:**
 selects elements that are siblings of another element, regardless of their position. It is represented by a tilde `(~)`. For example, `p ~ img` selects all `<img>` elements that are after a `<p>` element.
 
+## CSS position basics -
+
+The CSS position property is used to define the position of an element on a webpage.
+
+The location of the positioned element is set with the four properties: top, left, right, and bottom. These properties only work when the position property is set and have different positioning behaviors.
+
+The position property has the following five values:
+
+### static (default value)
+
+The `static` value of the `position` property allows elements to be positioned accordingly to the normal flow of the document. The `static` position is not affected by the `top`, `right`, `bottom`, and `left` values.
+
+```
+p.main {
+    position: static;
+    top: 50px; /* doesn't work */
+    right: 50px; /* doesn't work */
+    bottom: 50px; /* doesn't work */
+    left: 50%; /* doesn't work */
+    background-color: greenyellow;
+}
+```
+
+### relative
+
+The `relative` value positions the element relative to the original position in the document. The element is positioned with the `top`, `right`, `bottom`, and `left` values.
+
+```
+p.main {
+    position: relative;
+    /* positions 90px from the top */
+    top: 90px;
+
+    /* positions 40px from the left */
+    left: 40px;
+    background-color: greenyellow;
+}
+```
+
+### absolute
+
+The `absolute` value removes the element completely from its normal flow in the document.
+
+The element is positioned relative to their closest positioned parent element (an ancestor element with a position value other than `static`).
+
+If there is no positioned ancestor, they are positioned relative to the document itself.
+
+```
+p.main {
+    position: absolute;
+    top: 70px;
+    left: 60px;
+    background-color: greenyellow;
+}
+```
+
+_Note: An absolutely positioned element loses its size and original space in the document flow._
+
+### fixed
+
+The `fixed` value positions an element to remain fixed in the same position, even when the page is scrolled. It is similar to the `absolute` value, but it remains relative to the viewport at all times.
+
+```
+p.main {
+    position: fixed;
+    top: 10px;
+    background-color: greenyellow;
+}
+```
+
+### sticky
+
+The `sticky` value positions the element as a combination of `relative` and `fixed` values.
+
+The `sticky` position behaves like `relative` positioning until the element reaches a certain scroll point on the screen. After that, the element sticks to the top of the viewport like a `fixed` element.
+
+```
+p.main {
+    position: fixed;
+    top: 10px;
+    background-color: greenyellow;
+}
+```
+
 ## Animating with only CSS -
 
 ### CSS 2D Transforms Methods
