@@ -443,3 +443,32 @@ e.g. -
 [CSS Animations](https://www.programiz.com/css/animations)
 
 ## Animating with Framer Motion -
+
+import { motion } from 'framer-motion';
+
+### Animating between conditional values
+
+[Framer Motion Docs](https://www.framer.com/motion/introduction/)
+
+```
+  <motion.span
+  animate={{ rotate: isExpanded ? 180 : 0 }}
+  className="challenge-item-details-icon"
+>
+```
+
+### Adding/Disappearing Entry Animations
+
+[AnimatePresence Docs](https://www.framer.com/motion/animate-presence/)
+
+```
+<AnimatePresence>
+  {isVisible && (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    />
+  )}
+</AnimatePresence>
+```
