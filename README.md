@@ -708,7 +708,7 @@ const { scrollY } = useScroll();
 
 ### useTransform
 
-[useTramsform Docs](https://www.framer.com/motion/use-transform/)
+[useTransform Docs](https://www.framer.com/motion/use-transform/)
 `useTransform` creates a `MotionValue` that takes the output of one or more other `MotionValues` and changes it some way.
 
 #### Mapping
