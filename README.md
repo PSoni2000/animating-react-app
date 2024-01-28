@@ -472,3 +472,207 @@ import { motion } from 'framer-motion';
   )}
 </AnimatePresence>
 ```
+
+### Hover Animation
+
+```
+<motion.button
+  whileHover={{ scale: 1.1 }}
+  transition={{ type: 'spring', stiffness: 500 }}
+  onClick={handleStartAddNewChallenge}
+  className="button"
+>
+```
+
+### Variants
+
+[Variants Docs](https://www.framer.com/motion/animation/#variants)
+Setting `animate` as an object is useful for simple, single-component animations. But sometimes we want to create animations that propagate throughout the DOM, and orchestrate those animations in a declarative way. We can do so with variants.
+
+```
+<motion.div
+  initial="hidden"
+  animate="visible"
+  variants={{
+    visible: { opacity: 1 },
+    hidden: { opacity: 0 },
+  }}
+/>
+```
+
+#### Propagation
+
+If a `motion` component has children, changes in variant will flow down through the component hierarchy until a child component defines its own `animate` property.
+
+```
+const list = {
+  visible: { opacity: 1 },
+  hidden: { opacity: 0 },
+}
+
+const item = {
+  visible: { opacity: 1, x: 0 },
+  hidden: { opacity: 0, x: -100 },
+}
+
+return (
+  <motion.ul
+    initial="hidden"
+    animate="visible"
+    variants={list}
+  >
+    <motion.li variants={item} />
+    <motion.li variants={item} />
+    <motion.li variants={item} />
+  </motion.ul>
+)
+```
+
+### staggerChildren: number
+
+When using variants, animations of child components can be staggered by this duration (in seconds).
+
+For instance, if `staggerChildren` is `0.01`, the first child will be delayed by `0` seconds, the second by `0.01`, the third by `0.02` and so on.
+
+The calculated stagger delay will be added to `delayChildren`.
+
+```
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.5
+    }
+  }
+}
+
+const item = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1 }
+}
+
+return (
+  <motion.ol
+    variants={container}
+    initial="hidden"
+    animate="show"
+  >
+    <motion.li variants={item} />
+    <motion.li variants={item} />
+  </motion.ol>
+)
+```
+
+### Keyframes
+
+[KeyFrames Docs](https://www.framer.com/motion/animation/##keyframes)
+
+Values in `animate` can also be set as a series of keyframes. This will animate through each value in sequence.
+
+```
+<motion.div
+  animate={{ x: [0, 100, 0] }}
+/>
+```
+
+We can use the current value as the initial keyframe by passing a **wildcard keyframe**, `null`.
+
+```
+<motion.div
+animate={{ x: [null, 100, 0] }}
+/>
+```
+
+This way, if a keyframes animation starts while the value is currently animating, the transition will be more natural. It also reduces duplication in our code.
+
+### useAnimate() hook
+
+[useAnimate docs](https://www.framer.com/motion/use-animate/)
+
+`useAnimate` provides a way of using the animate function that is scoped to the elements within your component.
+
+It provides a `scope` ref, and an `animate` function where every DOM selector is scoped to this ref.
+
+```import useAnimate hook
+import { useAnimate, stagger } from 'framer-motion';
+```
+
+```
+const [scope, animate] = useAnimate();
+```
+
+```calling animate function
+...
+      animate(
+        'input, textarea',
+        { x: [-10, 0, 10, 0] },
+        { type: 'spring', duration: 0.2, delay: stagger(0.05) }
+      );
+...
+```
+
+```
+<form id="new-challenge" onSubmit={handleSubmit} ref={scope}>
+<p>
+  <label htmlFor="title">Title</label>
+  <input ref={title} type="text" name="title" id="title" />
+</p>
+...
+</form>
+```
+
+#### stagger
+
+A function for staggering animations across elements.
+
+When animating elements with the `animate` function, it's possible to stagger animations across them using stagger().
+
+When animating more than one element, pass `stagger` to the `delay` option.
+
+```
+animate("li", { opacity: 1 }, { delay: stagger(0.1) })
+```
+
+### Layout animations
+
+Create layout and shared layout animations with React and Framer Motion.
+
+Framer Motion can animate between any CSS layout by using performant transforms instead of the layout system.
+
+For example, this component is animated by switching `justify-content` between `flex-start` and `flex-end`.
+
+To enable Framer Motion's layout animations, we simply set the `layout` prop of a `motion` component.
+
+```
+<motion.div layout />
+```
+
+Any layout change that happens as the result of a re-render will be animated. That could be any combination of:
+
+- Reordering of a list.
+- A style set on the component itself, for example a change in `width` or `position`.
+- A change in the parent's layout, e.g. `flexbox` or `grid`.
+- Or any other change in the component's layout.
+
+### AnimatePresence
+
+[AnimatePresence Docs](https://www.framer.com/motion/animate-presence/)
+
+`AnimatePresence` allows components to animate out when they're removed from the React tree.
+It's required to enable exit animations because React lacks a lifecycle method that:
+
+- Notifies components when they're going to be unmounted and
+- Allows them to defer that unmounting until after an operation is complete (for instance an animation).
+
+#### Multiple children
+
+`AnimatePresence` works the same way with multiple children. Just ensure that each has a unique `key` and components will animate in and out as they're added or removed from the tree.
+
+#### mode: "sync" | "wait" | "popLayout"
+
+Decides how AnimatePresence handles entering and exiting children.
+
+- `"sync"`: (Default) Children animate in/out as soon as they're added/removed.
+- `"wait"`: The entering child will wait until the exiting child has animated out. Note: Currently only renders a single child at a time.
+- `"popLayout"`: Exiting children will be "popped" out of the page layout. This allows surrounding elements to move to their new layout immediately.
