@@ -676,3 +676,108 @@ Decides how AnimatePresence handles entering and exiting children.
 - `"sync"`: (Default) Children animate in/out as soon as they're added/removed.
 - `"wait"`: The entering child will wait until the exiting child has animated out. Note: Currently only renders a single child at a time.
 - `"popLayout"`: Exiting children will be "popped" out of the page layout. This allows surrounding elements to move to their new layout immediately.
+
+### Shared layout animations
+
+When a new component is added that has a `layoutId` prop that matches an existing component, it will automatically animate out from the old component.
+
+```
+isSelected && <motion.div layoutId="underline" />
+```
+
+### Re-Triggering Animation via Keys
+
+setting the key and updating it to a different value will recreate the component and therefore be used to rerun entry animation.
+
+### useScroll
+
+Create scroll-linked animations with the useScroll hook.
+
+`useScroll` is used to create scroll-linked animations, like progress indicators and parallax effects.
+
+`useScroll` returns four [motion values](https://framer.com/motion/motionvalue/):
+
+`scrollX`/`scrollY`: The absolute scroll position, in pixels.
+`scrollXProgress`/`scrollYProgress`: The scroll position between the defined offsets, as a value between 0 and 1.
+
+```
+import { useScroll } from "framer-motion";
+
+const { scrollY } = useScroll();
+```
+
+### useTransform
+
+[useTramsform Docs](https://www.framer.com/motion/use-transform/)
+`useTransform` creates a `MotionValue` that takes the output of one or more other `MotionValues` and changes it some way.
+
+#### Mapping
+
+`useTransform` can also map a motion value from one range of values to another.
+
+To illustrate, look at this `x` motion value:
+
+```
+useTransform(value, input, output, options)
+```
+
+We can use `useTransform` to create a new motion value called `opacity`. By defining an input range and an output range we can say, "when `x` is `0`, `opacity` should be `1`. When `x` is `100`, `opacity` should be `0`."
+
+```
+const opacity = useTransform(
+  x,
+  [0, 100], // Map x from these values
+  [1, 0]  // Into these values
+)
+```
+
+Now, if `x` gets set to `50`, `opacity` will be `0.5`.
+
+**`motion` components have enhanced `style` props, allowing you to set them individually there, too.**
+
+#### Parallax effect
+
+```
+import { motion, useScroll, useTransform } from 'framer-motion';
+```
+
+```
+  const { scrollY } = useScroll();
+
+  const yCity = useTransform(scrollY, [0, 200], [0, -100]);
+  const opacityCity = useTransform(
+    scrollY,
+    [0, 200, 300, 500],
+    [1, 0.5, 0.5, 0]
+  );
+  const yHero = useTransform(scrollY, [0, 200], [0, -150]);
+  const opacityHero = useTransform(scrollY, [0, 300, 500], [1, 1, 0]);
+  const yText = useTransform(scrollY, [0, 200, 300, 500], [0, 50, 50, 300]);
+  const scaleText = useTransform(scrollY, [0, 300], [1, 1.5]);
+```
+
+```
+  <header id="welcome-header">
+    <motion.div
+      id="welcome-header-content"
+      style={{ scale: scaleText, y: yText }}
+    >
+      <h1>Ready for a challenge?</h1>
+      <Link id="cta-link" to="/challenges">
+        Get Started
+      </Link>
+    </motion.div>
+    <motion.img
+      style={{ opacity: opacityCity, y: yCity }}
+      src={cityImg}
+      alt="A city skyline touched by sunlight"
+      id="city-image"
+    />
+    <motion.img
+      style={{ y: yHero, opacity: opacityHero }}
+      src={heroImg}
+      alt="A superhero wearing a cape"
+      id="hero-image"
+    />
+  </header>
+```
